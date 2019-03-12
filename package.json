@@ -1,0 +1,15 @@
+{
+  "name": "google_play_publisher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node publish-apk.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "googleapis": "^37.2.0",
+    "google-auth-library": "^3.1.0"
+  }
+}

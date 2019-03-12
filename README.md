@@ -1,1 +1,1 @@
-# google-play-publish-image
+# google-play-publish-image [![Build Status](https://travis-ci.org/AngelVlc/google-play-publish-image.svg?branch=master)](https://travis-ci.org/AngelVlc/google-play-publish-image)
