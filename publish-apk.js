@@ -1,4 +1,4 @@
-const { auth } = require('google-auth-library');
+const { GoogleAuth } = require('google-auth-library');
 const { google } = require('googleapis');
 const fs = require('fs');
 
@@ -37,10 +37,8 @@ function checkEnvironment() {
 
 async function main() {
   // auth
-  await auth.getClient({
-    scopes: [
-      'https://www.googleapis.com/auth/androidpublisher'
-    ]
+  const auth = new GoogleAuth({
+    scopes: 'https://www.googleapis.com/auth/androidpublisher'
   });
 
   // get the publisher
