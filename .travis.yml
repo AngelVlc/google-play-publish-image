@@ -1,8 +1,0 @@
-language: minimal
-before_deploy:
-  - docker build . -t angelvlc/google-play-publish
-deploy:
-  provider: script
-  script: bash docker_push
-  on:
-    branch: master
