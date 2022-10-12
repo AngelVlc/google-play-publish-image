@@ -2,18 +2,18 @@ const { GoogleAuth } = require('google-auth-library');
 const { google } = require('googleapis');
 const fs = require('fs');
 
-const apkPath = process.argv[2];
+const aabPath = process.argv[2];
 const packageName = process.argv[3];
 const google_credentials_path = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
 function checkArguments() {
-  if (apkPath === undefined) {
+  if (aabPath === undefined) {
     console.error('Missing argument with the apk path')
     process.exit(1);
   }
 
-  if (!fs.existsSync(apkPath)) {
-    console.error(`Apk file '${apkPath}' doesn't exist`)
+  if (!fs.existsSync(aabPath)) {
+    console.error(`aab file '${aabPath}' doesn't exist`)
     process.exit(1);
   }
 
@@ -57,14 +57,22 @@ async function main() {
   const editId = insertResult.data.id;
 
   // upload apk
-  const uploadApkResult = await publisher.edits.apks.upload({
+  const uploadApkResult = await publisher.edits.bundles.upload({
     packageName: packageName,
     editId: editId,
     media: {
       mimeType: 'application/octet-stream',
-      body: fs.createReadStream(apkPath)
+      body: fs.createReadStream(aabPath)
     }
   });
+
+  if (
+    uploadApkResult.data.versionCode === undefined ||
+    uploadApkResult.data.versionCode === null
+  ) {
+    console.error('Bundle versionCode cannot be undefined or null')
+    process.exit(1);
+  }
   console.log('Apk uploaded:', uploadApkResult.data);
 
   // track update
@@ -94,7 +102,8 @@ async function main() {
   // edit commit
   const commitResult = await publisher.edits.commit({
     packageName: packageName,
-    editId: editId
+    editId: editId,
+    changesNotSentForReview: false
   });
   console.log('Result:', commitResult);
 }
